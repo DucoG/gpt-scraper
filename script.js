@@ -1,44 +1,52 @@
-// Get the elements from the HTML page
+// Get reference to elements on the page
 const urlInput = document.getElementById('url-input');
 const submitButton = document.getElementById('submit-button');
-const loading = document.getElementById('loading');
-const tldr = document.getElementById('tldr');
-const questionSection = document.getElementById('question-section');
+const loadingAnimation = document.getElementById('loading-animation');
+const summaryContainer = document.getElementById('summary-container');
+const findOutInput = document.getElementById('find-out-input');
+const findOutButton = document.getElementById('find-out-button');
 
-// Function to show the loading animation and hide the other elements
-function showLoading() {
-  loading.style.display = 'block';
-  tldr.style.display = 'none';
-  questionSection.style.display = 'none';
-}
-
-// Function to hide the loading animation and show the other elements
-function hideLoading() {
-  loading.style.display = 'none';
-  tldr.style.display = 'block';
-  questionSection.style.display = 'block';
-}
-
-// Function to simulate scraping the URL and getting the scraped text
-function getScrapedText(url) {
-  // Show the loading animation
-  showLoading();
-  
-  // Simulate the scraping process by using setTimeout to wait for 3 seconds
-  setTimeout(function() {
-    // Hide the loading animation
-    hideLoading();
-    
-    // Set the text of the TLDR element to a dummy summary
-    tldr.innerText = "This is a dummy TL;DR summary of the content at the URL";
-  }, 3000);
-}
-
-// Add an event listener to the submit button to call the getScrapedText function
-submitButton.addEventListener('click', function() {
-  // Get the URL from the input field
+// Add event listener to submit button to handle user input
+submitButton.addEventListener('click', () => {
+  // Get URL from input field
   const url = urlInput.value;
-  
-  // Call the getScrapedText function
-  getScrapedText(url);
+
+  // Show loading animation
+  loadingAnimation.style.display = 'block';
+
+  // Make request to server to extract text from URL and generate summary using GPT-3
+  fetch('/generate-summary', {
+    method: 'POST',
+    body: JSON.stringify({ url }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Hide loading animation
+      loadingAnimation.style.display = 'none';
+
+      // Display summary
+      summaryContainer.innerHTML = `<p>${data.summary}</p>`;
+      summaryContainer.style.display = 'block';
+
+      // Show "find out" section
+      findOutInput.style.display = 'block';
+      findOutButton.style.display = 'block';
+    });
+});
+
+// Add event listener to "find out" button to handle user input
+findOutButton.addEventListener('click', () => {
+  // Get query from input field
+  const query = findOutInput.value;
+
+  // Make request to server to get information related to query using GPT-3
+  fetch('/find-out', {
+    method: 'POST',
+    body: JSON.stringify({ query }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Display information
+      alert(data.information);
+    });
 });
