@@ -27,4 +27,4 @@ if __name__ == '__main__':
     text = scrape_text(args.url)
 
     # Print the extracted text to the console
-    return text
+    print(text)
