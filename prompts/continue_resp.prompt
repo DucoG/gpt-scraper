@@ -1,0 +1,4 @@
+the length of your output may sometimes get cut off as your response length is limited right?
+If your response gets cut off, I will reply with "continue response". 
+
+If I reply with "continue response" and your response was indeed cut off, please continue your previous response as a reply, repeating the last 3 lines before your response got cut off. If your response was already finished, reply: "response already at end".
