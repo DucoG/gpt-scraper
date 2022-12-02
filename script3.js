@@ -1,15 +1,13 @@
-import require;
 
-const fetch = require('node-fetch');
 
-document.getElementById('submit-button').addEventListener('click', function() {
+document.getElementById('submit-button').addEventListener('click', () => {
     // Show the loading animation and message
     document.getElementById('loading').style.display = 'block';
-    
+
     // Get the URL from the input field
     const url = document.getElementById('url-input').value;
 
-    // Use node-fetch to make a request to the URL
+    // Use the built-in fetch method to make a request to the URL
     fetch(url)
         .then(response => response.text())
         .then(text => {
